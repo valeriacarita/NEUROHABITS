@@ -58,7 +58,7 @@ class HabitController:
         conn = get_connection()
         cur = conn.cursor()
         
-        # Construir SET dinámico
+        # Construimos el SET dinámico
         updates = []
         values = []
         if name: 

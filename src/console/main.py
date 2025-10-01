@@ -75,17 +75,12 @@ def habit_menu(controller: HabitController, user_id: int):
             if not habits:
                 print("⚠️ No tienes hábitos registrados.")
             else:
-                # --- AQUÍ EMPIEZA LA IMPLEMENTACIÓN DE TABULATE ---
                 
-                # 1. Definir los encabezados de la tabla
                 headers = ["ID", "Nombre", "Descripción", "Frecuencia", "Estado", "Creado en"]
 
-                # 2. Imprimir la tabla
-                # 'habits' es la lista de datos, 'headers' son los títulos, 'tablefmt' es el estilo.
                 print("\n📋 Hábitos:")
                 print(tabulate(habits, headers=headers, tablefmt="fancy_grid"))
                 
-                # --- AQUÍ TERMINA LA IMPLEMENTACIÓN DE TABULATE ---        elif opcion == '3':
             hid = input_int("ID del hábito: ", 0)
             if hid:
                 controller.add_progress(hid)
@@ -130,7 +125,7 @@ def get_default_user_id():
     return row["id"] if row else None
 
 def main():
-    # Crear tablas al inicio
+    # Creamos tablas al inicio
     create_tables()
 
     # Instanciar controladores
@@ -141,7 +136,7 @@ def main():
 
     current_user_id = None
 
-    # Aquí ya puedes mostrar tu menú
+    
     while True:
         print("\n=== NEUROHABITS - Consola ===")
         print("1) Gestionar hábitos")
