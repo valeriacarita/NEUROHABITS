@@ -1,0 +1,93 @@
+
+
+
+
+
+
+
+
+
+
+
+import sqlite3
+from pathlib import Path
+
+DB_PATH = Path(__file__).parent / "neurohabits.db"
+
+class Database:
+    def __init__(self, path=DB_PATH):
+        self.path = path
+        self._init_db()
+
+    def connect(self):
+        conn = sqlite3.connect(str(self.path))
+        conn.row_factory = sqlite3.Row
+        return conn
+
+    def _init_db(self):
+        with self.connect() as conn:
+            c = conn.cursor()
+            # Tabla de usuarios
+            c.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL
+            )
+            """)
+            # Tabla de hábitos
+            c.execute("""
+            CREATE TABLE IF NOT EXISTS habits (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                name TEXT NOT NULL,
+                timestamp TEXT,
+                duration INTEGER,
+                difficulty INTEGER,
+                mood TEXT,
+                notes TEXT,
+                completed INTEGER DEFAULT 0,
+                FOREIGN KEY(user_id) REFERENCES users(id)
+            )
+            """)
+            # Usuario por defecto
+            c.execute("INSERT OR IGNORE INTO users (id, name) VALUES (1, 'default')")
+            conn.commit()
+        import sqlite3
+
+def create_tables():
+    conn = sqlite3.connect("habits.db")
+    cursor = conn.cursor()
+
+    # Tabla de usuarios
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE
+    )
+    """)
+
+    # Tabla de hábitos
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS habits (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        title TEXT NOT NULL,
+        frequency TEXT,
+        status TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+import sqlite3
+
+def get_connection():
+    conn = sqlite3.connect("neurohabits.db")  # nombre de tu base de datos
+    return conn
+
+
+
+
+
